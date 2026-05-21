@@ -1,0 +1,99 @@
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__col">
+        <p class="site-footer__brand">{{ section.settings.brand_name | default: shop.name }}</p>
+        <p class="site-footer__newsletter-text">{{ section.settings.newsletter_text }}</p>
+        {% form 'customer', class: 'newsletter-form' %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <input
+            type="email"
+            name="contact[email]"
+            class="newsletter-form__input"
+            placeholder="{{ section.settings.newsletter_placeholder }}"
+            required
+            autocomplete="email"
+          >
+          <button type="submit" class="btn btn--accent">{{ section.settings.newsletter_button }}</button>
+        {% endform %}
+        <div class="site-footer__social">
+          {%- if settings.social_instagram != blank -%}
+            <a href="{{ settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+          {%- endif -%}
+          {%- if settings.social_tiktok != blank -%}
+            <a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">TT</a>
+          {%- endif -%}
+          {%- if settings.social_facebook != blank -%}
+            <a href="{{ settings.social_facebook }}" target="_blank" rel="noopener" aria-label="Facebook">FB</a>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'menu' -%}
+          <div class="site-footer__col" {{ block.shopify_attributes }}>
+            <h3 class="site-footer__heading">{{ block.settings.heading }}</h3>
+            {%- for link in block.settings.menu.links -%}
+              <a class="site-footer__link" href="{{ link.url }}">{{ link.title }}</a>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.show_payments -%}
+      <div class="site-footer__payments">
+        <span class="site-footer__payment-icon">Visa</span>
+        <span class="site-footer__payment-icon">Mastercard</span>
+        <span class="site-footer__payment-icon">PSE</span>
+        <span class="site-footer__payment-icon">Nequi</span>
+        <span class="site-footer__payment-icon">Addi</span>
+      </div>
+    {%- endif -%}
+
+    <div class="site-footer__bottom">
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. Todos los derechos reservados.</span>
+      <span>{{ section.settings.country_note }}</span>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer Premium",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "brand_name", "label": "Nombre marca" },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Texto newsletter",
+      "default": "Únete y recibe lanzamientos exclusivos antes que nadie."
+    },
+    { "type": "text", "id": "newsletter_placeholder", "label": "Placeholder email", "default": "Tu correo" },
+    { "type": "text", "id": "newsletter_button", "label": "Botón newsletter", "default": "Suscribirme" },
+    { "type": "checkbox", "id": "show_payments", "label": "Mostrar métodos de pago", "default": true },
+    { "type": "text", "id": "country_note", "label": "Nota país", "default": "Envíos a toda Colombia 🇨🇴" }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Columna menú",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Título", "default": "Tienda" },
+        { "type": "link_list", "id": "menu", "label": "Menú" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer Premium",
+      "blocks": [
+        { "type": "menu", "settings": { "heading": "Tienda" } },
+        { "type": "menu", "settings": { "heading": "Ayuda" } },
+        { "type": "menu", "settings": { "heading": "Legal" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,11 @@
+{
+  "general": {
+    "meta": {
+      "tags": "Etiquetado \"{{ tags }}\"",
+      "page": "Página {{ page }}"
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Ir al contenido"
+  }
+}

@@ -1,0 +1,41 @@
+<section class="emotional-banner reveal" id="banner-{{ section.id }}">
+  <div class="emotional-banner__media">
+    {%- if section.settings.image != blank -%}
+      {{
+        section.settings.image
+        | image_url: width: 2400
+        | image_tag: loading: 'lazy', sizes: '100vw', widths: '750, 1200, 1800, 2400', alt: ''
+      }}
+    {%- else -%}
+      <img src="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-lifestyle_large.png" alt="" loading="lazy">
+    {%- endif -%}
+  </div>
+  <div class="emotional-banner__overlay"></div>
+  <div class="emotional-banner__content">
+    <blockquote class="emotional-banner__quote">{{ section.settings.quote }}</blockquote>
+    {%- if section.settings.button_label != blank -%}
+      <a href="{{ section.settings.button_link }}" class="btn btn--primary">
+        {{ section.settings.button_label }}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Banner emocional",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Imagen lifestyle" },
+    {
+      "type": "text",
+      "id": "quote",
+      "label": "Frase emocional",
+      "default": "Tu estilo no sigue tendencias. Las crea."
+    },
+    { "type": "text", "id": "button_label", "label": "CTA", "default": "Comprar ahora" },
+    { "type": "url", "id": "button_link", "label": "Link CTA" }
+  ],
+  "presets": [{ "name": "Banner emocional" }]
+}
+{% endschema %}

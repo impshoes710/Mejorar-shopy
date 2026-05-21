@@ -1,0 +1,11 @@
+{
+  "name": "mejorar-shopy",
+  "private": true,
+  "description": "Tema Shopify premium calzado dama — no usa Astro",
+  "scripts": {
+    "build": "node scripts/vercel-build.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

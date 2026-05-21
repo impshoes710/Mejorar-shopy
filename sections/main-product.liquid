@@ -1,0 +1,139 @@
+<section class="product-page section-padding">
+  <div class="container product-page__grid">
+    <div class="product-gallery reveal">
+      <div class="product-gallery__main">
+        {%- if product.featured_media -%}
+          {{
+            product.featured_media
+            | image_url: width: 1200
+            | image_tag: id: 'ProductImage', loading: 'eager', sizes: '(min-width:990px) 50vw, 100vw', widths: '400, 600, 800, 1200'
+          }}
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="product-info reveal">
+      <h1 class="product-info__title">{{ product.title }}</h1>
+      <p class="product-info__price" data-product-price>
+        {%- if product.compare_at_price > product.price -%}
+          <span style="text-decoration:line-through;color:var(--color-muted);margin-right:0.5rem;">
+            {{ product.compare_at_price | money }}
+          </span>
+        {%- endif -%}
+        {{ product.price | money }}
+      </p>
+
+      {%- if product.description != blank -%}
+        <div class="text-muted" style="margin-bottom:1.5rem;font-size:0.9375rem;">
+          {{ product.description | strip_html | truncate: 200 }}
+        </div>
+      {%- endif -%}
+
+      {% form 'product', product, class: 'product-form', id: 'product-form' %}
+        {%- unless product.has_only_default_variant -%}
+          {%- for option in product.options_with_values -%}
+            <div class="variant-picker">
+              <span class="variant-picker__label">{{ option.name }}</span>
+              <div class="variant-picker__options">
+                {%- for value in option.values -%}
+                  <button
+                    type="button"
+                    class="variant-picker__option{% if option.selected_value == value %} is-selected{% endif %}"
+                    data-option="{{ option.name }}"
+                    data-value="{{ value }}"
+                  >
+                    {{ value }}
+                  </button>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endunless -%}
+
+        <select name="id" class="visually-hidden" aria-hidden="true">
+          {%- for variant in product.variants -%}
+            <option
+              value="{{ variant.id }}"
+              {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
+              {% unless variant.available %}disabled{% endunless %}
+            >
+              {{ variant.title }}
+            </option>
+          {%- endfor -%}
+        </select>
+
+        <button
+          type="submit"
+          name="add"
+          class="btn btn--primary btn--full product-form__submit"
+          {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+        >
+          {%- if product.selected_or_first_available_variant.available -%}
+            Agregar al carrito
+          {%- else -%}
+            Agotado
+          {%- endif -%}
+        </button>
+      {% endform %}
+
+      <ul class="trust-bar__list" style="margin-top:2rem;flex-wrap:wrap;animation:none;width:100%;color:var(--color-muted);font-size:0.8125rem;">
+        <li class="trust-bar__item"><span>🚚</span> Envío Colombia</li>
+        <li class="trust-bar__item"><span>↺</span> Cambios fáciles</li>
+        <li class="trust-bar__item"><span>🔒</span> Pago seguro</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="sticky-atc" aria-hidden="true">
+  <div class="sticky-atc__info">
+    <p class="sticky-atc__title">{{ product.title }}</p>
+    <p class="sticky-atc__price">{{ product.price | money }}</p>
+  </div>
+  <button type="button" class="btn btn--primary" data-sticky-atc>Agregar</button>
+</div>
+
+<script>
+  (function syncVariants() {
+    const form = document.getElementById('product-form');
+    if (!form) return;
+    const select = form.querySelector('select[name="id"]');
+    const options = form.querySelectorAll('.variant-picker__option');
+    const variants = {{ product.variants | json }};
+
+    function findVariant() {
+      const selected = {};
+      form.querySelectorAll('.variant-picker').forEach((picker) => {
+        const name = picker.querySelector('.variant-picker__label').textContent.trim();
+        const active = picker.querySelector('.variant-picker__option.is-selected');
+        if (active) selected[name] = active.dataset.value;
+      });
+      return variants.find((v) =>
+        v.options.every((opt, i) => opt === Object.values(selected)[i])
+      );
+    }
+
+    options.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const group = btn.closest('.variant-picker__options');
+        group.querySelectorAll('.variant-picker__option').forEach((b) => b.classList.remove('is-selected'));
+        btn.classList.add('is-selected');
+        const match = findVariant();
+        if (match && select) {
+          select.value = match.id;
+          document.querySelector('[data-product-price]').textContent =
+            new Intl.NumberFormat('es-CO', { style: 'currency', currency: '{{ cart.currency.iso_code | default: "COP" }}' }).format(match.price / 100);
+        }
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Producto",
+  "tag": "section",
+  "class": "main-product-section",
+  "settings": []
+}
+{% endschema %}

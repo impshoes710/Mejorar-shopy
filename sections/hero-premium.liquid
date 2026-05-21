@@ -1,0 +1,63 @@
+<section class="hero-premium" id="hero-{{ section.id }}">
+  <div class="hero-premium__media">
+    {%- if section.settings.video != blank -%}
+      {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true }}
+    {%- elsif section.settings.image != blank -%}
+      {{
+        section.settings.image
+        | image_url: width: 2400
+        | image_tag:
+          loading: 'eager',
+          fetchpriority: 'high',
+          sizes: '100vw',
+          widths: '750, 1100, 1500, 2000, 2400',
+          alt: section.settings.image.alt | default: section.settings.heading
+      }}
+    {%- else -%}
+      <img src="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png" alt="" width="2400" height="1600" loading="eager">
+    {%- endif -%}
+  </div>
+  <div class="hero-premium__overlay"></div>
+
+  <div class="hero-premium__content">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="hero-premium__eyebrow text-uppercase">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+    <h1 class="hero-premium__title heading-display">{{ section.settings.heading }}</h1>
+    {%- if section.settings.subheading != blank -%}
+      <p class="hero-premium__subtitle">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+    <div class="hero-premium__actions">
+      {%- if section.settings.button_primary_label != blank -%}
+        <a href="{{ section.settings.button_primary_link }}" class="btn btn--primary">
+          {{ section.settings.button_primary_label }}
+        </a>
+      {%- endif -%}
+      {%- if section.settings.button_secondary_label != blank -%}
+        <a href="{{ section.settings.button_secondary_link }}" class="btn btn--secondary">
+          {{ section.settings.button_secondary_label }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Premium",
+  "tag": "section",
+  "class": "hero-section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Imagen hero (modelo + calzado)" },
+    { "type": "video", "id": "video", "label": "Video hero (opcional, reemplaza imagen)" },
+    { "type": "text", "id": "eyebrow", "label": "Texto superior", "default": "Nueva temporada" },
+    { "type": "text", "id": "heading", "label": "Título principal", "default": "Pisa diferente." },
+    { "type": "textarea", "id": "subheading", "label": "Subtítulo", "default": "Elegancia que se nota en cada paso." },
+    { "type": "text", "id": "button_primary_label", "label": "CTA principal", "default": "Comprar ahora" },
+    { "type": "url", "id": "button_primary_link", "label": "Link CTA principal" },
+    { "type": "text", "id": "button_secondary_label", "label": "CTA secundario", "default": "Ver colección" },
+    { "type": "url", "id": "button_secondary_link", "label": "Link CTA secundario" }
+  ],
+  "presets": [{ "name": "Hero Premium" }]
+}
+{% endschema %}

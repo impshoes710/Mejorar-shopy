@@ -1,0 +1,62 @@
+<header class="site-header" data-header>
+  <div class="container site-header__inner">
+    <button class="site-header__nav-toggle" type="button" data-nav-toggle aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="desktop-nav" aria-label="Navegación principal">
+      {%- for link in section.settings.menu.links -%}
+        <a class="desktop-nav__link" href="{{ link.url }}">{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
+
+    <a class="site-header__logo" href="{{ routes.root_url }}">
+      {%- if section.settings.logo != blank -%}
+        {{ section.settings.logo | image_url: width: 280 | image_tag: alt: shop.name, loading: 'eager' }}
+      {%- else -%}
+        {{ section.settings.logo_text | default: shop.name }}
+      {%- endif -%}
+    </a>
+
+    <div class="site-header__icons">
+      <a class="site-header__icon" href="{{ routes.search_url }}" aria-label="Buscar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M20 20L17 17"/></svg>
+      </a>
+      <a class="site-header__icon" href="{{ routes.account_url }}" aria-label="Cuenta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+      </a>
+      <a class="site-header__icon" href="{{ routes.cart_url }}" aria-label="Carrito">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 6h15l-1.5 9H8L6 6z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
+        {%- if cart.item_count > 0 -%}
+          <span class="cart-count">{{ cart.item_count }}</span>
+        {%- endif -%}
+      </a>
+    </div>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Menú móvil">
+    {%- for link in section.settings.menu.links -%}
+      <a class="mobile-nav__link" href="{{ link.url }}">{{ link.title }}</a>
+    {%- endfor -%}
+    {%- if section.settings.show_sale_link -%}
+      <a class="mobile-nav__link" href="{{ section.settings.sale_url }}" style="color: var(--color-accent);">
+        {{ section.settings.sale_label }}
+      </a>
+    {%- endif -%}
+  </nav>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "text", "id": "logo_text", "label": "Texto logo (si no hay imagen)", "default": "IMP" },
+    { "type": "link_list", "id": "menu", "label": "Menú", "default": "main-menu" },
+    { "type": "checkbox", "id": "show_sale_link", "label": "Mostrar link ofertas", "default": true },
+    { "type": "url", "id": "sale_url", "label": "URL ofertas" },
+    { "type": "text", "id": "sale_label", "label": "Texto ofertas", "default": "Nueva colección" }
+  ]
+}
+{% endschema %}

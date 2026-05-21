@@ -1,0 +1,61 @@
+<section class="trust-bar{% if section.settings.style == 'beige' %} trust-bar--beige{% endif %}">
+  <div class="trust-bar__track">
+    <ul class="trust-bar__list">
+      {%- for block in section.blocks -%}
+        <li class="trust-bar__item" {{ block.shopify_attributes }}>
+          <span class="trust-bar__icon" aria-hidden="true">{{ block.settings.icon }}</span>
+          <span>{{ block.settings.text }}</span>
+        </li>
+      {%- endfor -%}
+    </ul>
+    <ul class="trust-bar__list trust-bar__list--duplicate" aria-hidden="true">
+      {%- for block in section.blocks -%}
+        <li class="trust-bar__item">
+          <span class="trust-bar__icon" aria-hidden="true">{{ block.settings.icon }}</span>
+          <span>{{ block.settings.text }}</span>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Barra de confianza",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Estilo fondo",
+      "options": [
+        { "value": "dark", "label": "Oscuro" },
+        { "value": "beige", "label": "Beige" }
+      ],
+      "default": "dark"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Beneficio",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Ícono (emoji)", "default": "✦" },
+        { "type": "text", "id": "text", "label": "Texto", "default": "Envíos a toda Colombia" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Barra de confianza",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "🚚", "text": "Envíos a toda Colombia" } },
+        { "type": "item", "settings": { "icon": "↺", "text": "Cambios fáciles" } },
+        { "type": "item", "settings": { "icon": "🔒", "text": "Pago seguro" } },
+        { "type": "item", "settings": { "icon": "✓", "text": "Calidad garantizada" } },
+        { "type": "item", "settings": { "icon": "♡", "text": "Atención personalizada" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
