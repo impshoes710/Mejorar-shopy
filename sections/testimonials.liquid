@@ -1,0 +1,79 @@
+<section class="testimonials section-padding reveal" id="testimonials-{{ section.id }}">
+  <div class="container">
+    <header class="section-header section-header--center">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="section-header__eyebrow text-uppercase">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h2 class="heading-lg">{{ section.settings.heading }}</h2>
+    </header>
+
+    <div class="testimonials__slider">
+      <div class="testimonials__track">
+        {%- for block in section.blocks -%}
+          <article class="testimonial-card" {{ block.shopify_attributes }}>
+            {%- if block.settings.avatar != blank -%}
+              {{
+                block.settings.avatar
+                | image_url: width: 144
+                | image_tag: class: 'testimonial-card__avatar', loading: 'lazy', alt: block.settings.author
+              }}
+            {%- else -%}
+              <div class="testimonial-card__avatar" style="background:var(--color-accent);"></div>
+            {%- endif -%}
+            <div class="testimonial-card__stars" aria-label="{{ block.settings.rating }} de 5 estrellas">
+              {%- assign stars = block.settings.rating | default: 5 -%}
+              {%- for i in (1..stars) -%}★{%- endfor -%}
+            </div>
+            <p class="testimonial-card__text">"{{ block.settings.quote }}"</p>
+            <p class="testimonial-card__author">{{ block.settings.author }}</p>
+            {%- if block.settings.verified -%}
+              <span class="testimonial-card__verified">✓ Cliente verificado</span>
+            {%- endif -%}
+          </article>
+        {%- endfor -%}
+      </div>
+
+      {%- if section.blocks.size > 1 -%}
+        <nav class="testimonials__nav" aria-label="Testimonios">
+          {%- for block in section.blocks -%}
+            <button type="button" class="testimonials__dot{% if forloop.first %} is-active{% endif %}" aria-label="Testimonio {{ forloop.index }}"></button>
+          {%- endfor -%}
+        </nav>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonios",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto superior", "default": "Lo que dicen" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Clientas reales" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Testimonio",
+      "settings": [
+        { "type": "image_picker", "id": "avatar", "label": "Foto (redonda)" },
+        { "type": "range", "id": "rating", "min": 1, "max": 5, "step": 1, "label": "Estrellas", "default": 5 },
+        { "type": "textarea", "id": "quote", "label": "Comentario", "default": "Los amé desde el primer día. Súper cómodos y llegaron rápido." },
+        { "type": "text", "id": "author", "label": "Nombre", "default": "María G." },
+        { "type": "checkbox", "id": "verified", "label": "Cliente verificado", "default": true }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonios",
+      "blocks": [
+        { "type": "review", "settings": { "author": "Laura M.", "quote": "Calidad increíble. Se ven exactamente como en las fotos." } },
+        { "type": "review", "settings": { "author": "Valentina R.", "quote": "Mi par favorito. Elegantes y cómodos para todo el día." } },
+        { "type": "review", "settings": { "author": "Camila S.", "quote": "Envío rapidísimo a Medellín. Volveré a comprar." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

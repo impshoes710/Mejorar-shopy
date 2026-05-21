@@ -1,0 +1,21 @@
+{
+  "name": "Footer",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "menu-1": { "type": "menu", "settings": { "heading": "Tienda" } },
+        "menu-2": { "type": "menu", "settings": { "heading": "Ayuda" } },
+        "menu-3": { "type": "menu", "settings": { "heading": "Legal" } }
+      },
+      "block_order": ["menu-1", "menu-2", "menu-3"],
+      "settings": {
+        "newsletter_text": "Únete y recibe lanzamientos exclusivos antes que nadie.",
+        "show_payments": true,
+        "country_note": "Envíos a toda Colombia"
+      }
+    }
+  },
+  "order": ["footer"]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Header",
+  "type": "header",
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {
+        "logo_text": "IMP",
+        "show_sale_link": true,
+        "sale_label": "Nueva colección"
+      }
+    }
+  },
+  "order": ["header"]
+}

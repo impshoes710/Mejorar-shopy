@@ -1,0 +1,46 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "IMP Premium Calzado",
+    "theme_version": "1.0.0",
+    "theme_author": "IMP Shoes",
+    "theme_documentation_url": "https://github.com/impshoes710/Mejorar-shopy",
+    "theme_support_url": "https://github.com/impshoes710/Mejorar-shopy/issues"
+  },
+  {
+    "name": "Colores de marca",
+    "settings": [
+      { "type": "color", "id": "color_background", "label": "Fondo principal", "default": "#FAFAF8" },
+      { "type": "color", "id": "color_foreground", "label": "Texto principal", "default": "#0A0A0A" },
+      { "type": "color", "id": "color_accent", "label": "Acento dorado/nude", "default": "#C4A574" },
+      { "type": "color", "id": "color_dark", "label": "Fondo oscuro", "default": "#0A0A0A" },
+      { "type": "color", "id": "color_beige", "label": "Beige elegante", "default": "#E8E4DF" }
+    ]
+  },
+  {
+    "name": "Redes y contacto",
+    "settings": [
+      { "type": "text", "id": "social_instagram", "label": "Instagram URL" },
+      { "type": "text", "id": "social_tiktok", "label": "TikTok URL" },
+      { "type": "text", "id": "social_facebook", "label": "Facebook URL" },
+      {
+        "type": "text",
+        "id": "whatsapp_number",
+        "label": "WhatsApp (solo números)",
+        "default": "573000000000"
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_message",
+        "label": "Mensaje WhatsApp",
+        "default": "Hola, quiero información sobre sus zapatos"
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      { "type": "image_picker", "id": "favicon", "label": "Favicon" }
+    ]
+  }
+]

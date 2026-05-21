@@ -1,0 +1,48 @@
+<section class="collection-hero reveal">
+  <div class="container text-center">
+    <span class="section-header__eyebrow text-uppercase">{{ section.settings.eyebrow }}</span>
+    <h1 class="collection-hero__title heading-xl">{{ collection.title }}</h1>
+    {%- if collection.description != blank -%}
+      <p class="text-muted" style="max-width:560px;margin:0.5rem auto 0;">{{ collection.description }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+<section class="section-padding" style="padding-top:0;">
+  <div class="container">
+    {% paginate collection.products by section.settings.products_per_page %}
+      <div class="product-grid product-grid--4">
+        {%- for product in collection.products -%}
+          {% render 'product-card-premium', card_product: product %}
+        {%- else -%}
+          <p class="text-center text-muted" style="grid-column:1/-1;">No hay productos en esta colección.</p>
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="text-center" style="margin-top:3rem;" aria-label="Paginación">
+          {{ paginate | default_pagination }}
+        </nav>
+      {%- endif -%}
+    {% endpaginate %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Colección",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto superior", "default": "Colección" },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 24,
+      "step": 4,
+      "label": "Productos por página",
+      "default": 16
+    }
+  ]
+}
+{% endschema %}
